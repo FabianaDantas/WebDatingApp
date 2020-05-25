@@ -1,4 +1,4 @@
-namespace WebDatingApp.API.Models
+namespace WebDatingApp.API.Domain.Models
 {
     public class User
     {

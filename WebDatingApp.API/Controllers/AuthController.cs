@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using WebDatingApp.API.Data;
-using WebDatingApp.API.DTOs;
-using WebDatingApp.API.Models;
+using WebDatingApp.API.Domain.DTOs;
+using WebDatingApp.API.Domain.Models;
 
 namespace WebDatingApp.API.Controllers
 {

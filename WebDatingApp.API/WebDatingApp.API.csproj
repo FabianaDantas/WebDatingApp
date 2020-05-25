@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>c3f369e7-02f2-4a3b-b9ef-75e0dcc61bbb</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2"/>
@@ -9,5 +10,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.5.0"/>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0"/>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.4.1"/>
   </ItemGroup>
 </Project>

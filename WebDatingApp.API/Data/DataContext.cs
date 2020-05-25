@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebDatingApp.API.Models;
+using WebDatingApp.API.Domain.Models;
 
 namespace WebDatingApp.API.Data
 {

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using WebDatingApp.API.Models;
+using WebDatingApp.API.Domain.Models;
 
 namespace WebDatingApp.API.Data
 {

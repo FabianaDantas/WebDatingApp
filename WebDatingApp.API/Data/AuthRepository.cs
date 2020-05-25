@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WebDatingApp.API.Models;
+using WebDatingApp.API.Domain.Models;
 
 namespace WebDatingApp.API.Data
 {
