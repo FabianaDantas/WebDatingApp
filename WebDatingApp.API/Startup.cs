@@ -5,6 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebDatingApp.API.Options;
 using WebDatingApp.API.Installers;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using WebDatingApp.API.Helpers;
 
 namespace WebDatingApp.API
 {
@@ -30,6 +34,20 @@ namespace WebDatingApp.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            } else {
+                // lidando com exceçoes, criando extensao na pasta Helper
+                app.UseExceptionHandler(builder => 
+                    builder.Run(async context => {
+                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if(error != null)
+                        {
+                            // extensao na pasta Helper.Extensions, para criar um header
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
+                    })
+                );
             }
             
             var swaggerOptions = new SwaggerOptions();
