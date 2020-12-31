@@ -17,6 +17,7 @@ namespace WebDatingApp.API.Installers
             //services.AddTransient()
             // O Scoped é o ideal para varios requests HTTPs simultaneos
             services.AddScoped<IAuthRepository, AuthRepository>();        
+            services.AddScoped<IDatingRepository, DatingRepository>();        
         }
-    }
+   }
 }

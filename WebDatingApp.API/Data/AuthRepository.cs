@@ -18,7 +18,8 @@ namespace WebDatingApp.API.Data
         {
             // se usarmos FirstOrDefaultAsync, caso ele n encontre ele retorna null
             // se usassemos FirstAsync, caso n encontre ele retorna uma Exception
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+            // utiliza Include para retornar o Photos, senao todos os atributos seriam null para photos
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.Username == username);
 
             if (user == null) 
                 return null;

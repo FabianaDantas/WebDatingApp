@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using AutoMapper;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,13 @@ namespace WebDatingApp.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
             _repo = repo;
             _config = config;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -34,10 +37,13 @@ namespace WebDatingApp.API.Controllers
             if(await _repo.UserExists(userRegister.Username))
                 return BadRequest("Nome de usuário já existe");
 
-            var userNew = new User
+            
+            /*var userNew = new User
             {
                 Username = userRegister.Username
-            };
+            };*/
+
+            var userNew = _mapper.Map(userRegister, new User());
 
             var userCreated = await _repo.Register(userNew, userRegister.Password);
 
@@ -53,6 +59,7 @@ namespace WebDatingApp.API.Controllers
             if(userExists == null)
                 return Unauthorized();
 
+            // conteudo do token
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userExists.Id.ToString()),
@@ -73,8 +80,11 @@ namespace WebDatingApp.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            var user = _mapper.Map<UserForListDTO>(userExists);
+
             return Ok(new {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+                user
             });
 
         }

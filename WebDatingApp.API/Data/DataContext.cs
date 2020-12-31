@@ -9,5 +9,6 @@ namespace WebDatingApp.API.Data
         // O nome do metodo é o nome da tabela criada no banco
         public DbSet<Value> Values { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Photo> Photos { get; set; }
     }
 }

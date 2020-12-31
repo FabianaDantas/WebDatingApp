@@ -34,7 +34,9 @@ namespace WebDatingApp.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            } else {
+            } 
+            else 
+            {
                 // lidando com exceçoes, criando extensao na pasta Helper
                 app.UseExceptionHandler(builder => 
                     builder.Run(async context => {
