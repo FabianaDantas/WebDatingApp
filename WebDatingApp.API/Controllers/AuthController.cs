@@ -47,7 +47,9 @@ namespace WebDatingApp.API.Controllers
 
             var userCreated = await _repo.Register(userNew, userRegister.Password);
 
-            return StatusCode(201);
+            var userReturn = _mapper.Map<UserForDetailedDTO>(userCreated);
+
+            return CreatedAtRoute("GetUser", new {controller = "Users", id = userCreated.Id}, userReturn);
 
         }
 

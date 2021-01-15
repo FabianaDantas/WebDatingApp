@@ -1,9 +1,10 @@
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ErrorInterceptorProvider } from './_interceptors/error.interceptor';
 import { LoadingInterceptorProvider } from './_interceptors/loading.interceptor';
@@ -28,11 +29,16 @@ import { MembersEditComponent } from './members/members-edit/members-edit.compon
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { appRoutes } from './routes';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FileUploadModule } from 'ng2-file-upload';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+import { registerLocaleData } from '@angular/common';
+import localeBr from '@angular/common/locales/pt';
+import { TimeagoModule } from 'ngx-timeago';
+registerLocaleData(localeBr, 'pt');
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -44,6 +50,7 @@ export function tokenGetter() {
        rotate: { enable: false }
    };
 }
+
 
 @NgModule({
    declarations: [
@@ -61,22 +68,26 @@ export function tokenGetter() {
    ],
    imports: [
       BrowserModule,
+      BrowserAnimationsModule,
       HttpClientModule,
       FormsModule,
+      ReactiveFormsModule,
       BsDropdownModule.forRoot(),
+      BsDatepickerModule.forRoot(),
       TabsModule.forRoot(),
       BrowserAnimationsModule,
       RouterModule.forRoot(appRoutes),
-      NgxGalleryModule,
       FileUploadModule,
+      NgxGalleryModule,
       NgxSpinnerModule,
+      TimeagoModule.forRoot(),
       JwtModule.forRoot({
          config: {
            tokenGetter: tokenGetter,
            whitelistedDomains: ["localhost:5000"],
            blacklistedRoutes: ["localhost:5000/api/auth"],
          },
-       }),
+       })
    ],
    providers: [
       ErrorInterceptorProvider,
@@ -85,7 +96,8 @@ export function tokenGetter() {
       MemberListResolver,
       MemberEditResolver,
       PreventUnsavedChangesGuard,
-      { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
+      { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig },
+      { provide: LOCALE_ID, useValue: 'pt' }
    ],
    bootstrap: [
       AppComponent

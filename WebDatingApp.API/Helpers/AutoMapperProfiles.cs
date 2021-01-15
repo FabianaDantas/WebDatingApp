@@ -24,9 +24,7 @@ namespace WebDatingApp.API.Helpers
 
             CreateMap<Photo, PhotosForDetailedDTO>();
             CreateMap<UserForUpdateDTO,User>();
-            CreateMap<UserRegisterDTO,User>()
-                .ForMember(destino => destino.Created, opt => opt.MapFrom(source => DateTime.Now));
-
+            CreateMap<UserRegisterDTO,User>();
             CreateMap<Photo, PhotoForReturnDTO>();
             CreateMap<PhotoForCreationDTO, Photo>();
         }
