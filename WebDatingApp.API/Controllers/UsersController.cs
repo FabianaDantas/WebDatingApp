@@ -9,9 +9,11 @@ using Microsoft.Extensions.Configuration;
 using WebDatingApp.API.Data;
 using WebDatingApp.API.Domain.DTOs;
 using System.Security.Claims;
+using WebDatingApp.API.Helpers;
 
 namespace WebDatingApp.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -26,14 +28,27 @@ namespace WebDatingApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery] UsersParams userParams)
         {
-            var users = await _repo.GetUsers();
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var userFromRepo = await _repo.GetUser(currentUserId);
+
+            userParams.UserId = currentUserId;
+
+            if(string.IsNullOrEmpty(userParams.Gender)) {
+                userParams.Gender = userFromRepo.Gender == "feminino" ? "masculino" : "feminino";
+            }
+
+            var users = await _repo.GetUsers(userParams);
 
             var usersReturn = _mapper.Map<IEnumerable<UserForListDTO>>(users);
 
+            Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
             return Ok(usersReturn);
         }
+        
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {

@@ -37,7 +37,10 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { registerLocaleData } from '@angular/common';
 import localeBr from '@angular/common/locales/pt';
-import { TimeagoModule } from 'ngx-timeago';
+import { TimeagoIntl, TimeagoModule, TimeagoFormatter,TimeagoCustomFormatter } from 'ngx-timeago';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
 registerLocaleData(localeBr, 'pt');
 
 export function tokenGetter() {
@@ -80,14 +83,19 @@ export function tokenGetter() {
       FileUploadModule,
       NgxGalleryModule,
       NgxSpinnerModule,
-      TimeagoModule.forRoot(),
+      TimeagoModule.forRoot({
+         intl: { provide: TimeagoIntl, useClass: TimeagoIntl },
+         formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
+      }),
       JwtModule.forRoot({
          config: {
            tokenGetter: tokenGetter,
            whitelistedDomains: ["localhost:5000"],
            blacklistedRoutes: ["localhost:5000/api/auth"],
          },
-       })
+       }),
+      PaginationModule.forRoot(),
+      ButtonsModule.forRoot()
    ],
    providers: [
       ErrorInterceptorProvider,

@@ -4,6 +4,8 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gal
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { UserService } from 'src/app/_services/user.service';
+import { TimeagoIntl } from 'ngx-timeago';
+import { strings as englishStrings } from 'ngx-timeago/language-strings/pt-br';
 
 @Component({
   selector: 'app-members-detail',
@@ -15,7 +17,11 @@ export class MembersDetailComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
+  constructor(intl: TimeagoIntl, private userService: UserService, 
+    private alertify: AlertifyService, private route: ActivatedRoute) {
+    intl.strings = englishStrings;
+    intl.changes.next();
+   }
 
   ngOnInit() {
     this.route.data.subscribe(data => {

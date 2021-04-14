@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WebDatingApp.API.Domain.Models;
 
 namespace WebDatingApp.API.Domain.Models
 {

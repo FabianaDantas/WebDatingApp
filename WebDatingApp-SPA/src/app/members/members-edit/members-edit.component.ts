@@ -5,6 +5,8 @@ import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { UserService } from 'src/app/_services/user.service';
+import { TimeagoIntl } from 'ngx-timeago';
+import { strings as englishStrings } from 'ngx-timeago/language-strings/pt-br';
 
 @Component({
   selector: 'app-members-edit',
@@ -22,8 +24,11 @@ export class MembersEditComponent implements OnInit {
   };
   user: User;
   photoUrl: string;
-  constructor(private route: ActivatedRoute, private alertify: AlertifyService, private userService: UserService,
-    private authService: AuthService) { }
+  constructor(intl: TimeagoIntl, private route: ActivatedRoute, private alertify: AlertifyService, 
+    private userService: UserService, private authService: AuthService) { 
+        intl.strings = englishStrings;
+        intl.changes.next();
+     }
 
   ngOnInit() {
     this.route.data.subscribe(data => {

@@ -65,6 +65,8 @@ namespace WebDatingApp.API.Installers
             // Cloudinary
             services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
+            // Service Filter
+            services.AddScoped<LogUserActivity>();
         }
     }
 }

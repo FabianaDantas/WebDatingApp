@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebDatingApp.API.Domain.Models;
+using WebDatingApp.API.Helpers;
+using System;
 
 namespace WebDatingApp.API.Data
 {
@@ -32,10 +34,31 @@ namespace WebDatingApp.API.Data
             return user;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<PagedList<User>> GetUsers(UsersParams usersParams)
         {
-            var users = await _context.Users.Include(p => p.Photos).ToListAsync();
-            return users;
+            var users = _context.Users.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
+            users = users.Where(u => u.Id != usersParams.UserId);
+            users = users.Where(u => u.Gender == usersParams.Gender);
+            if(usersParams.MinAge != 18 || usersParams.MaxAge != 99) 
+            {
+                var minDob = DateTime.Today.AddYears(-usersParams.MaxAge - 1);
+                var maxDob = DateTime.Today.AddYears(-usersParams.MinAge);
+
+                users = users.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+            }
+            if (!string.IsNullOrEmpty(usersParams.OrderBy))
+            {
+                switch (usersParams.OrderBy)
+                {
+                    case "created":
+                        users = users.OrderByDescending(u => u.Created);
+                        break;
+                    default:
+                        users = users.OrderByDescending(u => u.LastActive);
+                        break;
+                }
+            }
+            return await PagedList<User>.CreateAsync(users, usersParams.PageNumber, usersParams.PageSize);
         }
 
         public async Task<bool> SaveAll()

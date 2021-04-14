@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebDatingApp.API.Domain.Models;
+using WebDatingApp.API.Helpers;
 
 namespace WebDatingApp.API.Data
 {
@@ -10,7 +11,7 @@ namespace WebDatingApp.API.Data
          void Add<T>(T entity) where T: class;
          void Delete<T>(T entity) where T: class;
          Task<bool> SaveAll();
-         Task<IEnumerable<User>> GetUsers();
+         Task<PagedList<User>> GetUsers(UsersParams usersParams);
          Task<User> GetUser(int id);
          Task<Photo> GetPhoto(int id);
          Task<Photo> GetMainPhotoFromUser(int userId);
